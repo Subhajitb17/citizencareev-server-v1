@@ -1,0 +1,15 @@
+{
+  "name": "citizencareev-server-v1.0",
+  "version": "1.0.0",
+  "description": "Starts server with DB in production mode , which will be on cloud ( currently unavailable, so not gonna work )\r helllooo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
