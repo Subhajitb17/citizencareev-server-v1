@@ -2,6 +2,7 @@
 const express = require("express");
 
 // Import security packages
+const mongoSanitize = require("express-mongo-sanitize");
 const logger = require("./server/utils/logger");
 
 // Import configs
@@ -17,6 +18,9 @@ if (process.env.NODE_ENV === "development") {
   const morgan = require("morgan");
   app.use(morgan("tiny"));
 }
+
+// Sanitizes input data, prevents NoSQL injection
+app.use(mongoSanitize());
 
 app.get("/", (request, response) => {
   response.status(200).send("CitizenCareEV Server!");
@@ -37,10 +41,11 @@ app.use(function (err, req, res, next) {
   next(err);
 });
 
-const PORT = config.PORT || 5000;
-const server = app.listen(PORT, () => {
-  logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+const PORT = process.env.PORT;
+const server = app.listen(
+  PORT,
+  logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT} `)
+);
 
 process.on("unhandledRejection", (err, promise) => {
   logger.error(`Error: ${err.message}`);
