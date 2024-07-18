@@ -1,5 +1,5 @@
-const SliderModel = require("../../models/slider");
 const mongoose = require("mongoose");
+const SliderModel = require("../../models/slider-images-2");
 
 /**
  * This controller adds a SLider Image to the DB
