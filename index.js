@@ -3,11 +3,20 @@ const express = require("express");
 
 // Import security packages
 const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const hpp = require("hpp");
 const logger = require("./server/utils/logger");
 
 // Import configs
 const config = require("./server/configs/config");
 require("./server/configs/db.config"); // This will automatically run connectDB
+
+//import routes
+const SliderImages = require("./server/routes/slider-images");
+const SliderImages2 = require("./server/routes/slider-images-2");
+const getInTouch = require("./server/routes/get-in-touch");
+const freeDrive = require("./server/routes/test-drive");
 
 // Initialize the application
 const app = express();
@@ -21,6 +30,26 @@ if (process.env.NODE_ENV === "development") {
 
 // Sanitizes input data, prevents NoSQL injection
 app.use(mongoSanitize());
+
+// set security headers
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
+
+// Prevent XSS attacks
+app.use(xss());
+
+// prevents HTTP param pollution
+app.use(hpp());
+
+//routes
+app.use("/api/v1/slider-images", SliderImages);
+app.use("/api/v1/slider-images2", SliderImages2);
+app.use("/api/v1/get-in-touch", getInTouch);
+app.use("/api/v1/free-drive", freeDrive);
 
 app.get("/", (request, response) => {
   response.status(200).send("CitizenCareEV Server!");
